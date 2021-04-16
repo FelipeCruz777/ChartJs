@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MushSensors</title>
+    <link rel="icon" href="gra.png">
+    <!--Link para código do ChartsJS-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    
+<style>
+
+    body{
+
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    .meu-grafico {
+  
+  background-color: rgba(208, 208, 233, 0.3);;
+    border-radius: 20px;
+    margin-top: 50px;
+
+    
+    margin-top: 20px;
+
+    float: left;
+    
+   
+
+    width: 48%;
+
+  
+
+}
+
+.segundo-grafico {
+  
+  background-color: rgba(208, 208, 233, 0.3);;
+  border-radius: 20px;
+  margin-top: 50px;
+
+ 
+  margin-top: 20px;
+  
+ 
+ 
+
+  width: 48%;
+  float: right;
+
+
+
+}
+.grafico1{
+
+
+    width: 90%;
+
+    margin: auto;
+  
+}
+h1{
+
+    text-align: center;
+    color:   rgb(67, 67, 209);
+}
+
+
+
+body{
+
+    background-color: rgba(0,0,255, .3);
+    margin:auto;
+}
+
+.select{
+
+    background-color:  rgba(208, 208, 233, 0.3);
+    border-radius: 5px;
+}
+
+.usuario {
+
+
+ 
+   
+    height: auto;
+    background-color: rgba(208, 208, 233, 0.3);
+    border-radius: 15px;
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    
+  
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+    <h1>MushSensors</h1>
+
+   <div class="usuario">
+       <img src="man.png" alt="icone do usuario" width="50px">
+   Fernando
+   <b>Empresa: </b> Cogumelo Feliz
+    <b id="mudar_estufa"> Estufa 1 </b>
+
+    <select class="select"  id="estufa" onchange="mudar()">
+
+        <option value="1">Estufa 1</option>
+        <option value="2">Estufa 2</option>
+        <option value="3">Estufa 3</option>
+        <option value="4">Estufa 4</option>
+    </select>
+
+
+   </div>
+    <div class="grafico1">
+    <!--Coloque sempre o gráfico em uma div, fica mais fácil para ajustar na página-->
+    <div class="meu-grafico">
+        <!--Gráfico virá aqui-->
+        <canvas id="myChart" ></canvas>
+    </div>
+
+    <div class="segundo-grafico">
+        <!--Gráfico virá aqui-->
+        <canvas id="twoChart" ></canvas>
+    </div>
+
+
+
+
+
+</div>
+   
+</body>
+
+</html>
+
+<script>
+    // ctx é o contexto. Onde é para o gráfico ser renderizado? 
+    // Na div myChart! Vamos selecioná-la por getElementById
+    var ctx = document.getElementById('myChart');
+
+    // ao criar um new Chart, colocamos ->
+    // (contexto, { type, data e options} )
+    var meuGrafico = new Chart(ctx, {
+        // TYPE -> qual o tipo do gráfico? será um gráfico de barras? linhas? define aqui
+        type: 'bar',
+
+        // DATA -> os dados renderizados no gráfico:
+        data: {
+            // Informações em Eixo X
+            labels: ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+            // Datasets -> grupos de dados!
+            datasets: [
+            // Primeiro dataset    
+            {
+                // Qual o título deste dataset?
+                label: "Média das temperaturas",
+                // Dados? Lembre-se, respectivos a labels.
+                data: [18,18,18,20,21,21],
+                // expessura da linha
+                borderWidth: 5,
+                // cor da linha - em rgba, a é a opacidade.
+                // 1 = 100% // 0.5 = 50%
+                borderColor: 'rgba(139,0,0, .5)',
+                // cor de "fundo" dos dados na tela. transparent = sem cor.
+                backgroundColor: 'transparent',
+            },
+
+            // Segundo dataset
+            {
+                // igual o anterior. Mas, aqui, type line
+                type: 'line',
+                label: "Temperatura Mínima",
+                data: [17.5,17,17,19,19.5,20],
+                borderWidth: 5,
+                borderColor: 'rgba(0,0,255, .5)',
+                backgroundColor: 'transparent'
+            }
+            ]
+        },
+        
+        // OPTIONS -> Opções globais
+        options: {
+            
+            title: {
+                // mostrar titulo?
+                display: true,
+                // tamanho do texto
+                fontSize: 20,
+                // texto no titulo
+                text: "MushSensors",
+                // onde? right? left? top?
+                position: 'top',
+            },
+            legend: {
+                // mostrar legenda?
+                display: true,
+                // ao contrario? (dataset 1 depois de 2)
+                reverse: true,
+                // onde?
+                position: 'right'
+            },
+            layout: {
+            padding: {
+                // padding do grafico, pode add right e bottom também
+                left: 50,
+                top: 50
+            },
+           
+        }
+        }
+    })
+
+    var ctx2 = document.getElementById('twoChart');
+
+    // ao criar um new Chart, colocamos ->
+    // (contexto, { type, data e options} )
+    var segundoGrafico = new Chart(ctx2, {
+        // TYPE -> qual o tipo do gráfico? será um gráfico de barras? linhas? define aqui
+        type: 'bar',
+
+        // DATA -> os dados renderizados no gráfico:
+        data: {
+            // Informações em Eixo X
+            labels: ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+            // Datasets -> grupos de dados!
+            datasets: [
+            // Primeiro dataset    
+            {
+                // Qual o título deste dataset?
+                label: "Média das temperaturas",
+                // Dados? Lembre-se, respectivos a labels.
+                data: [18,18,18,20,21,21],
+                // expessura da linha
+                borderWidth: 5,
+                // cor da linha - em rgba, a é a opacidade.
+                // 1 = 100% // 0.5 = 50%
+                borderColor: 'rgba(139,0,0, .5)',
+                // cor de "fundo" dos dados na tela. transparent = sem cor.
+                backgroundColor: 'transparent',
+            },
+
+            // Segundo dataset
+            {
+                // igual o anterior. Mas, aqui, type line
+                type: 'bar',
+                label: "Temperatura Máxima",
+                data: [18.5,19,19,21,21,21],
+                borderWidth: 5,
+                borderColor: 'rgba(0,0,255, .5)',
+                backgroundColor: 'transparent'
+            }
+            ]
+        },
+        
+        // OPTIONS -> Opções globais
+        options: {
+            
+            title: {
+                // mostrar titulo?
+                display: true,
+                // tamanho do texto
+                fontSize: 20,
+                // texto no titulo
+                text: "MushSensors",
+                // onde? right? left? top?
+                position: 'top',
+            },
+            legend: {
+                // mostrar legenda?
+                display: true,
+                // ao contrario? (dataset 1 depois de 2)
+                reverse: true,
+                // onde?
+                position: 'right'
+            },
+            layout: {
+            padding: {
+                // padding do grafico, pode add right e bottom também
+                left: 50,
+                top: 50
+            },
+           
+        }
+        }
+    })
+
+
+    // mudando cor de fonte de tudo
+    Chart.defaults.global.defaultFontColor = "black";
+
+    
+
+    function mudar() {
+
+        if (estufa.value == 1){
+
+            mudar_estufa.innerHTML = `Estufa 1`;
+
+        }   else if (estufa.value == 2){
+
+mudar_estufa.innerHTML = `Estufa 2`;
+
+}
+
+else if (estufa.value == 3){
+
+mudar_estufa.innerHTML = `Estufa 3`;
+
+} else {
+
+    mudar_estufa.innerHTML = `Estufa 4`;
+}
+       
+    }
+</script>
